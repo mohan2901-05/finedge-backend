@@ -1,0 +1,27 @@
+# Build output
+/target/
+
+# IDE
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Local environment / configuration files containing secrets
+.env
+.env.*
+*.env
+*.env.local
+*.env.*.local
+
+# Logs and generated output
+*.log
+logs/
+
+# Monorepo-derived local startup artifacts
+mysql-startup.txt
+startup-log.txt
+
+# System files
+.DS_Store
+Thumbs.db

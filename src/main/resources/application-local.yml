@@ -1,0 +1,47 @@
+# ========================================================================
+# FinEdge - Local MySQL Configuration Profile (spring.profiles.active=local)
+# Placeholders and environment variables only. No plain secrets committed.
+# ========================================================================
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:finedgedb}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      idle-timeout: 300000
+      connection-timeout: 20000
+      max-lifetime: 1200000
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+
+finedge:
+  cors:
+    allowed-origins: "http://localhost:4200,http://127.0.0.1:4200"
+
+  # Authentication (Part D2). Local development configuration: registration
+  # assigns the seeded BORROWER role and ORG-T001 organisation. These values
+  # reference records seeded by V2 and V7 migrations. Production must supply
+  # its own values via FINEDGE_AUTH_DEFAULT_ORG_ID /
+  # FINEDGE_AUTH_DEFAULT_BORROWER_ROLE_ID environment variables; blank values
+  # fail closed (registration rejected).
+  auth:
+    default-org-id: ${FINEDGE_AUTH_DEFAULT_ORG_ID:ORG-T001}
+    default-borrower-role-id: ${FINEDGE_AUTH_DEFAULT_BORROWER_ROLE_ID:ROLE-T04}
